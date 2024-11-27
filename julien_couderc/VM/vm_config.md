@@ -12,4 +12,10 @@ Le changement du hostname d'une machine virtuelle permet de lui attribuer un nom
    
    Avant de changer le hostname, vous pouvez vérifier l'hostname actuel en exécutant la commande suivante :
    ```bash
+   hostnamectl
+   ```
+
+3. **Commande à éxécuter**
+
+   ```bash
    sudo hostnamectl set-hostname <newhostname>
