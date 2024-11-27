@@ -1,0 +1,14 @@
+services:
+  user1:
+    build:
+      context: ./user  
+    networks:
+      - private
+  user2:
+    build:
+      context: ./user  
+    networks:
+      - private
+
+networks:
+  private:
