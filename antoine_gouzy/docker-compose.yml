@@ -1,0 +1,38 @@
+services:
+  
+  user-1:
+    container_name: user-1
+    image: network-project-user
+    command: tail -f /dev/null
+    networks:
+      private
+  
+  user-2:
+    container_name: user-2
+    image: network-project-user
+    command: tail -f /dev/null
+    networks:
+      private
+  
+  web-container:
+    container_name: web-server
+    image: network-project-web
+    command: tail -f /dev/null
+    networks:
+      - dmz
+    ports:
+      - 8080:80
+
+networks:
+  private:
+    driver: bridge
+    ipam:
+     config:
+       - subnet: 10.5.1.0/24
+         gateway: 10.5.1.1
+  dmz:
+    driver: bridge
+    ipam:
+     config:
+       - subnet: 10.5.2.0/24
+         gateway: 10.5.2.1
