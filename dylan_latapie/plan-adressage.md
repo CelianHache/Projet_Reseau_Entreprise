@@ -9,8 +9,8 @@ On subdivise le réseau 10.0.0.0/8 en sous-réseaux adaptés pour chaque segment
 
 | **Segment**             | **Sous-réseau**    | **Masque**      | **Plage d'adresses**   | **Utilisation**                                           |
 |-------------------------|--------------------|-----------------|------------------------|-----------------------------------------------------------|
-| Réseau privé            | 10.0.1.0/24        | 255.255.255.0   | 10.0.1.1 - 10.0.1.254  | Machines internes de l'entreprise (clients, etc.).        |
-| DMZ                     | 10.0.2.0/24        | 255.255.255.0   | 10.0.2.1 - 10.0.2.254  | Services publics (DNS, web, etc.).                        |
+| Réseau privé            | 10.0.1.0/24        | 255.255.255.0   | 10.0.1.1 - 10.0.1.254  | Machines internes de l'entreprise (clients, DHCP, etc).   |
+| DMZ                     | 10.0.2.0/24        | 255.255.255.0   | 10.0.2.1 - 10.0.2.254  | Services publics (DNS, WEB, NGINX etc).                   |
 | Interconnexion routeur  | 10.0.3.0/30        | 255.255.255.252 | 10.0.3.1 - 10.0.3.2    | Lien point à point entre routeur interne et externe.      |
 
 ---
@@ -19,11 +19,13 @@ On subdivise le réseau 10.0.0.0/8 en sous-réseaux adaptés pour chaque segment
 ## Réseau privé (10.0.1.0/24)
 - **Passerelle** : 10.0.1.1
 - **Clients DHCP** : 10.0.1.10 - 10.0.1.210
+- **Serveur DHCP**: 10.0.1.5
 
 ## DMZ (10.0.2.0/24)
 - **Passerelle** : 10.0.2.1
 - **Serveur DNS** : 10.0.2.10
-- **Serveur Web** : 10.0.2.20
+- **Serveur Web** : 10.0.2.11
+- **Serveur NGINX** : 10.0.2.12
 
 ## Interconnexion routeur (10.0.3.0/30)
 - **Routeur interne** : 10.0.3.1
