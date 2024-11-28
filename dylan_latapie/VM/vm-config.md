@@ -4,13 +4,14 @@
 
 Voici un tableau pour documenter les spécifications système des machines virtuelles (VM).
 
-| **Nom de la VM** | **OS**          | **Version**   | **Processeurs (vCPU)** | **RAM (GB)** | **Disque principal (GB)** | **Réseau**           | **Adresse IP**      | **Commentaire**            |
-|------------------|----------------|---------------|-------------------------|--------------|---------------------------|-----------------------------------|----------------------|---------------------|
-| VM-SRV-ROUTER    | Ubuntu         | 24.04.01 (LTS)         | 2          | 2           | 30       | LAN Interne, DMZ, WAN   | 10.0.3.1, 10.0.2.1, 10.0.1.1      | Routeur, Firewall      |
-| VM-SRV-WEB       | Ubuntu         | 24.04.01 (LTS)         | 2          | 2           | 30       | DMZ                     | 10.0.2.3                          | Apache2                |
-| VM-SRV-NGINX     | Ubuntu         | 24.04.01 (LTS)         | 2          | 2           | 30       | DMZ                     | 10.0.2.4                          | Nginx                  |
-| VM-SRV-DNS       | Ubuntu         | 24.04.01 (LTS)         | 2          | 2           | 30       | DMZ                     | 10.0.2.5                          | Apache2                |
-| VM-PC-USER1      | Ubuntu         | 24.04.01 (LTS)         | 2          | 2           | 30       | LAN Interne             | 10.0.1.X                          | Poste de l'utilisateur |
+| **Nom de la VM** | **OS**         | **Version**    | **Processeurs (vCPU)** | **RAM (GB)** | **Disque dur (GB)** | **Réseau**             | **Adresse IP**               | **Commentaire**        |
+|------------------|----------------|----------------|------------------------|--------------|---------------------|------------------------|------------------------------|------------------------|
+| VM-SRV-ROUTER    | Ubuntu Server  | 24.04.01 (LTS) | 2                      | 2            | 30                  | LAN Interne, DMZ, WAN  | 10.0.3.1, 10.0.2.1, 10.0.1.1 | Routeur, Firewall      |
+| VM-SRV-DNS       | Ubuntu Server  | 24.04.01 (LTS) | 2                      | 2            | 30                  | DMZ                    | 10.0.2.10                    | Bind9                  |
+| VM-SRV-WEB       | Ubuntu Server  | 24.04.01 (LTS) | 2                      | 2            | 30                  | DMZ                    | 10.0.2.11                    | Apache2                |
+| VM-SRV-NGINX     | Ubuntu Server  | 24.04.01 (LTS) | 2                      | 2            | 30                  | DMZ                    | 10.0.2.12                    | Nginx                  |
+| VM-SRV-DHCP      | Ubuntu Server  | 24.04.01 (LTS) | 2                      | 2            | 30                  | LAN Interne            | 10.0.1.5                     | DHCP                   |
+| VM-PC-USER1      | Ubuntu Desktop | 24.04.01 (LTS) | 2                      | 2            | 30                  | LAN Interne            | 10.0.1.X                     | Poste de l'utilisateur |
 
 ### **Description des colonnes :**
 - **Nom de la VM** : Identifiant unique ou nom de la machine.
