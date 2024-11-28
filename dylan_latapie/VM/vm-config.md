@@ -29,3 +29,13 @@ Changer le hostname de la VM :
 ```
 sudo hostnamectl set-hostname <newhostname>
 ```
+
+## Configuration Ubuntu (VM GENERIC)
+### Informations VM
+- **Nom de la machine** : `vm-srv`
+- **Mot de passe root** : `password`
+- **Serveur SSH** : `actif`
+
+### **Utilisateur par défaut**  
+- **Nom d'utilisateur** : `dylanlatapie`  
+- **Mot de passe** : `password`
