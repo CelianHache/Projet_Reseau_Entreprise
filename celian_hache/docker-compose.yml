@@ -1,22 +1,69 @@
 services:
+  router: 
+    build: 
+      context: ./router
+    networks:
+      private:
+        ipv4_address: 172.18.0.2
+      dmz:
+        ipv4_address: 172.18.1.2
+    command: tail -f /dev/null
+      
   user1:
     build:
       context: ./private/user  
     networks:
       - private
+    cap_add:
+      - NET_ADMIN
+    command: >-
+      sh -c "
+      ip route del default &&
+      ip route add default via 172.18.0.2 &&
+      tail -f /dev/null"
+    depends_on:
+      - router
+
   user2:
     build:
       context: ./private/user  
     networks:
       - private
+    cap_add:
+      - NET_ADMIN
+    command: >-
+      sh -c "
+      ip route del default &&
+      ip route add default via 172.18.0.2 &&
+      tail -f /dev/null"
+    depends_on:
+      - router
+
   webserver:
     build:
       context: ./dmz/webserver
     networks:
       - dmz
+    cap_add:
+      - NET_ADMIN
     ports:
-      - "8080:80"
+      - 8080:80
+    command: >-
+      sh -c "
+      ip route del default &&
+      ip route add default via 172.18.1.2 &&
+      apachectl -D FOREGROUND"
+    depends_on:
+      - router
 
 networks:
   private:
+    driver: bridge
+    ipam: 
+      config: 
+        - subnet: 172.18.0.0/24
   dmz:
+    driver: bridge
+    ipam: 
+      config: 
+        - subnet: 172.18.1.0/24

@@ -14,12 +14,12 @@
 
 ### Private Subnet (`172.18.0.0/24`)
 - **IP Range**: `172.18.0.1` to `172.18.0.254`
-- **Gateway (Router)**: `172.18.0.1`
+- **Gateway (Router)**: `172.18.0.2`
 - **Broadcast**: `172.18.0.255`
 
 ---
 
 ### DMZ Subnet (`172.18.1.0/24`)
 - **IP Range**: `172.18.1.1` to `172.18.1.254`
-- **Gateway (Router)**: `172.18.1.1`
+- **Gateway (Router)**: `172.18.1.2`
 - **Broadcast**: `172.18.1.255`
