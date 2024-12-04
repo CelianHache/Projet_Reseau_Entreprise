@@ -1,14 +1,22 @@
 services:
   user1:
     build:
-      context: ./user  
+      context: ./private/user  
     networks:
       - private
   user2:
     build:
-      context: ./user  
+      context: ./private/user  
     networks:
       - private
+  webserver:
+    build:
+      context: ./dmz/webserver
+    networks:
+      - dmz
+    ports:
+      - "8080:80"
 
 networks:
   private:
+  dmz:
