@@ -9,36 +9,36 @@ On subdivise le réseau 10.0.0.0/8 en sous-réseaux adaptés pour chaque segment
 
 | **Segment**             | **Sous-réseau**    | **Masque**      | **Plage d'adresses**   | **Utilisation**                                           |
 |-------------------------|--------------------|-----------------|------------------------|-----------------------------------------------------------|
-| Réseau privé            | 10.0.1.0/24        | 255.255.255.0   | 10.0.1.1 - 10.0.1.254  | Machines internes de l'entreprise (clients, etc).         |
-| DMZ                     | 10.0.2.0/24        | 255.255.255.0   | 10.0.2.1 - 10.0.2.254  | Services publics (DNS, WEB, NGINX etc).                   |
-| Interconnexion routeur  | 10.0.3.0/30        | 255.255.255.252 | 10.0.3.1 - 10.0.3.2    | Routeur, Firewall, DHCP                                   |
+| Réseau privé            | 10.1.1.0/24        | 255.255.255.0   | 10.0.1.1 - 10.0.1.254  | Machines internes de l'entreprise (clients, etc).         |
+| DMZ                     | 10.1.2.0/24        | 255.255.255.0   | 10.0.2.1 - 10.0.2.254  | Services publics (DNS, WEB, NGINX etc).                   |
+| Interconnexion routeur  | 10.0.0.0/24        | 255.255.255.0   | 10.0.0.1 - 10.0.0.254  | Routeur, Firewall, DHCP                                   |
 
 ---
 
 # 3. **Détails d’adressage**
-## Réseau privé (10.0.1.0/24)
-- **Passerelle** : 10.0.1.1
-- **Clients DHCP** : 10.0.1.10 - 10.0.1.210
-- **Serveur DHCP**: 10.0.1.5
+## Réseau privé (10.1.1.0/24)
+- **Passerelle** : 10.1.1.1
+- **Clients DHCP** : 10.1.1.10 - 10.1.1.210
+- **Serveur DHCP**: 10.1.1.5
 
-## DMZ (10.0.2.0/24)
-- **Passerelle** : 10.0.2.1
-- **Serveur DNS** : 10.0.2.10
-- **Serveur Web** : 10.0.2.11
-- **Serveur NGINX** : 10.0.2.12
+## DMZ (10.1.2.0/24)
+- **Passerelle** : 10.1.2.1
+- **Serveur DNS** : 10.1.2.10
+- **Serveur Web** : 10.1.2.11
+- **Serveur NGINX** : 10.1.2.12
 
-## Interconnexion routeur (10.0.3.0/30)
-- **Routeur interne** : 10.0.3.1
-- **Routeur externe** : 10.0.3.2
+## Interconnexion routeur (10.0.0.0/24)
+- **Routeur interne (Dylan)** : 10.0.0.2
+- **Routeur externe 1 (Julien)** : 10.0.0.1
 
 ---
 
 # 4. **Plan de routage**
 ## Routes des segments :
 1. **Réseau privé** :
-   - Destination : 10.0.2.0/24 → Passerelle 10.0.1.1 (via routeur interne)
+   - Destination : 10.1.2.0/24 → Passerelle 10.1.1.1 (via routeur interne)
 2. **DMZ** :
-   - Destination : 10.0.1.0/24 → Passerelle 10.0.2.1 (via routeur interne)
+   - Destination : 10.1.1.0/24 → Passerelle 10.1.2.1 (via routeur interne)
 3. **Routeur** :
    - Destination : 0.0.0.0/0 (Internet) → Interface du routeur externe.
 
