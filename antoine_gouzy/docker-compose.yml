@@ -5,19 +5,18 @@ services:
     image: network-project-user
     command: tail -f /dev/null
     networks:
-      private
+      - private
   
   user-2:
     container_name: user-2
     image: network-project-user
     command: tail -f /dev/null
     networks:
-      private
+      - private
   
   web-container:
     container_name: web-server
     image: network-project-web
-    command: tail -f /dev/null
     networks:
       - dmz
     ports:
