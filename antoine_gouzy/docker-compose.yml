@@ -3,24 +3,53 @@ services:
   user-1:
     container_name: user-1
     image: network-project-user
-    command: tail -f /dev/null
+    cap_add:
+      - NET_ADMIN
+    command: sh -c "ip route del default &&
+                    ip route add default via 10.5.1.10 &&
+                    tail -f /dev/null"
     networks:
       - private
+    depends_on:
+      - routeur-container
   
   user-2:
     container_name: user-2
     image: network-project-user
-    command: tail -f /dev/null
+    cap_add:
+      - NET_ADMIN
+    command: sh -c "ip route del default &&
+                    ip route add default via 10.5.1.10 &&
+                    tail -f /dev/null"
     networks:
       - private
+    depends_on:
+      - routeur-container
   
   web-container:
     container_name: web-server
     image: network-project-web
+    cap_add:
+      - NET_ADMIN
+    command: sh -c "ip route del default &&
+                    ip route add default via 10.5.2.10 &&
+                    apache2ctl -D FOREGROUND"
     networks:
       - dmz
     ports:
       - 8080:80
+    depends_on:
+      - routeur-container
+
+  routeur-container:
+    container_name: routeur
+    image: network-project-user
+    command: tail -f /dev/null
+    networks:
+      dmz :
+        ipv4_address: 10.5.2.10
+      private :
+        ipv4_address: 10.5.1.10
 
 networks:
   private:
@@ -28,10 +57,8 @@ networks:
     ipam:
      config:
        - subnet: 10.5.1.0/24
-         gateway: 10.5.1.1
   dmz:
     driver: bridge
     ipam:
      config:
        - subnet: 10.5.2.0/24
-         gateway: 10.5.2.1
