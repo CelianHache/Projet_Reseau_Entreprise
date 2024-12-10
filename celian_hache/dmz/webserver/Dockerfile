@@ -5,4 +5,7 @@ RUN apt-get update && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
-WORKDIR /var/www/htmls
+    
+WORKDIR /var/www/html
+    
+COPY ./index.html .
