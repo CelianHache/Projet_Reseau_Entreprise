@@ -16,9 +16,6 @@ services:
       iptables -t nat -A POSTROUTING -o eth2 -j MASQUERADE &&
       iptables -t nat -A PREROUTING -i eth2 -p tcp --dport 80 -j DNAT --to-destination 172.18.1.3:80 && 
 
-      iptables -P INPUT DROP &&
-      iptables -P OUTPUT ACCEPT &&
-      iptables -P FORWARD DROP &&
 
       iptables -A INPUT -p icmp -j ACCEPT &&
       iptables -A OUTPUT -p icmp -j ACCEPT &&
@@ -57,10 +54,10 @@ services:
       - NET_ADMIN
     command: >-
       sh -c "
-      ip route del default &&
-      ip route add default via 172.18.0.2 &&
       ip addr flush dev eth0 &&
       dhclient eth0 &&
+      ip route del default &&
+      ip route add default via 172.18.0.2 &&
       tail -f /dev/null"
     depends_on:
       - router
@@ -74,11 +71,30 @@ services:
       - NET_ADMIN
     command: >-
       sh -c "
-      ip route del default &&
-      ip route add default via 172.18.0.2 &&
       ip addr flush dev eth0 &&
       dhclient eth0 &&
+      ip route del default &&
+      ip route add default via 172.18.0.2 &&
       tail -f /dev/null"
+    depends_on:
+      - router
+
+  reverse-proxy:
+    build:
+      context: ./reverse_proxy
+    networks:
+      dmz:
+        ipv4_address: 172.18.1.4
+    cap_add:
+      - NET_ADMIN
+    ports:
+      - 8081:80
+    
+    command: >-
+      sh -c "
+      ip route del default &&
+      ip route add default via 172.18.1.2 &&
+      nginx -g 'daemon off;'"
     depends_on:
       - router
 
