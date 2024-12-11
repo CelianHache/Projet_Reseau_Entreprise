@@ -23,11 +23,11 @@ iptables -A INPUT -p tcp --dport 53 -j ACCEPT   #DNS TCP
 iptables -A INPUT -i lo -j ACCEPT               #localhost
 iptables -A INPUT -p icmp -j ACCEPT             #icmp
 
-iptables -A FORWARD -i eth0 -o eth2 -j ACCEPT   # private -> public
-iptables -A FORWARD -i eth2 -o eth0 -j ACCEPT   # public -> private
+iptables -A FORWARD -i eth0 -o eth2 -j ACCEPT   # dmz -> public
+iptables -A FORWARD -i eth2 -o eth0 -j ACCEPT   # public -> dmz
 
-iptables -A FORWARD -i eth1 -o eth2 -j ACCEPT   # dmz -> public
-iptables -A FORWARD -i eth2 -o eth1 -j ACCEPT   # public -> dmz
+iptables -A FORWARD -i eth1 -o eth2 -j ACCEPT   # private -> public
+iptables -A FORWARD -i eth2 -o eth1 -j ACCEPT   # public -> private
 
-iptables -A FORWARD -i eth0 -o eth1 -j ACCEPT   # private -> dmz
-iptables -A FORWARD -i eth1 -o eth0 -j ACCEPT   # dmz -> private
+iptables -A FORWARD -i eth0 -o eth1 -j ACCEPT   # dmz -> private
+iptables -A FORWARD -i eth1 -o eth0 -j ACCEPT   # private -> dmz

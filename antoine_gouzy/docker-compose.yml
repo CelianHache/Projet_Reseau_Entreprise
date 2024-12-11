@@ -8,6 +8,8 @@ services:
       - NET_ADMIN
     command: sh -c "ip route del default &&
                     ip route add default via 10.5.1.10 &&
+                    ip addr flush dev eth0 &&
+                    dhclient -v eth0 &&
                     tail -f /dev/null"
     networks:
       - private
@@ -22,6 +24,8 @@ services:
       - NET_ADMIN
     command: sh -c "ip route del default &&
                     ip route add default via 10.5.1.10 &&
+                    ip addr flush dev eth0 &&
+                    dhclient -v eth0 &&
                     tail -f /dev/null"
     networks:
       - private
@@ -46,7 +50,7 @@ services:
 
   router:
     build:
-      context: ./user
+      context: ./router
     container_name: router
     networks:
       dmz :
@@ -62,6 +66,7 @@ services:
       sysctl -w net.ipv4.ip_forward=1 && 
       ip addr add 10.5.2.10/24 dev eth1 && 
       ip addr add 10.5.1.10/24 dev eth0 && 
+
       iptables -t nat -A POSTROUTING -o eth2 -j MASQUERADE &&
       iptables -t nat -A PREROUTING -i eth2 -p tcp --dport 80 -j DNAT --to-destination 10.5.2.2:80 &&
 
@@ -84,6 +89,8 @@ services:
 
       iptables -A FORWARD -i eth0 -o eth1 -j ACCEPT   &&
       iptables -A FORWARD -i eth1 -o eth0 -j ACCEPT   &&
+
+      service isc-dhcp-server start &&
 
       tail -f /dev/null"
 
