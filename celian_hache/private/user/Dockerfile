@@ -1,9 +1,6 @@
 FROM ubuntu:24.04
 
 RUN apt-get update && \
-    apt-get install -y wget && \
-    apt-get install -y iputils-ping
+    apt-get install -y wget iputils-ping iproute2 iptables
 
-WORKDIR /home/user  
-
-CMD ["tail", "-f", "/dev/null"]
+WORKDIR /home/user
