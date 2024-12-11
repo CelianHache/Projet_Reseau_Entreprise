@@ -1,8 +1,9 @@
 services:
   
   user-1:
+    build: 
+      context: ./user/
     container_name: user-1
-    image: network-project-user
     cap_add:
       - NET_ADMIN
     command: sh -c "ip route del default &&
@@ -11,11 +12,12 @@ services:
     networks:
       - private
     depends_on:
-      - routeur-container
+      - router
   
   user-2:
+    build: 
+        context: ./user/
     container_name: user-2
-    image: network-project-user
     cap_add:
       - NET_ADMIN
     command: sh -c "ip route del default &&
@@ -24,11 +26,12 @@ services:
     networks:
       - private
     depends_on:
-      - routeur-container
+      - router
   
   web-container:
+    build: 
+      context: ./web-server/
     container_name: web-server
-    image: network-project-web
     cap_add:
       - NET_ADMIN
     command: sh -c "ip route del default &&
@@ -39,19 +42,36 @@ services:
     ports:
       - 8080:80
     depends_on:
-      - routeur-container
+      - router
 
-  routeur-container:
-    container_name: routeur
-    image: network-project-user
-    command: tail -f /dev/null
+  router:
+    build:
+      context: ./user
+    container_name: router
     networks:
       dmz :
         ipv4_address: 10.5.2.10
       private :
         ipv4_address: 10.5.1.10
+      public:
+        ipv4_address: 10.0.0.2
+    cap_add:
+      - NET_ADMIN 
+    command: >-
+      sh -c "
+      sysctl -w net.ipv4.ip_forward=1 && 
+      ip addr add 10.5.2.10/24 dev eth1 && 
+      ip addr add 10.5.1.10/24 dev eth0 && 
+      tail -f /dev/null"
 
 networks:
+  public:
+    driver: macvlan
+    driver_opts:
+      parent : enp0s31f6
+    ipam:
+     config:
+      - subnet: 10.0.0.0/24
   private:
     driver: bridge
     ipam:

@@ -7,4 +7,4 @@ RUN apt -y install wget iproute2 inetutils-ping curl host mtr-tiny tcpdump iptab
 
 WORKDIR /var/www/html
 
-#CMD ["apache2ctl", "-D", "FOREGROUND"]
+COPY ./index.html index.html
