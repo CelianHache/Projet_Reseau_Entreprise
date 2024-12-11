@@ -62,6 +62,8 @@ services:
       sysctl -w net.ipv4.ip_forward=1 && 
       ip addr add 10.5.2.10/24 dev eth1 && 
       ip addr add 10.5.1.10/24 dev eth0 && 
+      iptables -t nat -A POSTROUTING -o eth2 -j MASQUERADE &&
+      iptables -t nat -A PREROUTING -i eth2 -p tcp --dport 80 -j DNAT --to-destination 10.5.2.2:80 &&
       tail -f /dev/null"
 
 networks:
