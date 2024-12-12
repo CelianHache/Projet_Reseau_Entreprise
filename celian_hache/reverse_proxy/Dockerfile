@@ -2,7 +2,7 @@ FROM nginx:latest
 
 
 RUN apt-get update && \
-    apt-get install -y wget iproute2
+    apt-get install -y wget iproute2 tshark
 
 EXPOSE 80
 

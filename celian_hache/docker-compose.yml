@@ -14,7 +14,7 @@ services:
     command: >-
       sh -c "
       iptables -t nat -A POSTROUTING -o eth2 -j MASQUERADE &&
-      iptables -t nat -A PREROUTING -i eth2 -p tcp --dport 80 -j DNAT --to-destination 172.18.1.3:80 && 
+      iptables -t nat -A PREROUTING -i eth2 -p tcp --dport 80 -j DNAT --to-destination 172.18.1.4:80 && 
 
 
       iptables -A INPUT -p icmp -j ACCEPT &&
