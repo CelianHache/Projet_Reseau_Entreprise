@@ -42,9 +42,27 @@ services:
                     ip route add default via 10.5.2.10 &&
                     apache2ctl -D FOREGROUND"
     networks:
-      - dmz
+      dmz :
+        ipv4_address: 10.5.2.2
     ports:
       - 8080:80
+    depends_on:
+      - router
+  
+  rproxy:
+    build: 
+      context: ./rproxy/
+    container_name: rproxy
+    command: sh -c "ip route del default &&
+                    ip route add default via 10.5.2.10 &&
+                    nginx -g \"daemon off;\""
+    cap_add:
+      - NET_ADMIN
+    networks:
+      dmz :
+        ipv4_address: 10.5.2.3
+    ports:
+      - 8081:80
     depends_on:
       - router
 
@@ -68,7 +86,7 @@ services:
       ip addr add 10.5.1.10/24 dev eth0 && 
 
       iptables -t nat -A POSTROUTING -o eth2 -j MASQUERADE &&
-      iptables -t nat -A PREROUTING -i eth2 -p tcp --dport 80 -j DNAT --to-destination 10.5.2.2:80 &&
+      iptables -t nat -A PREROUTING -i eth2 -p tcp --dport 80 -j DNAT --to-destination 10.5.2.3:80 &&
 
       iptables -P INPUT DROP &&
       iptables -P FORWARD DROP &&
