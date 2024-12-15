@@ -19,7 +19,7 @@ On subdivise le réseau 10.0.0.0/8 en sous-réseaux adaptés pour chaque segment
 ## Réseau privé (10.1.1.0/24)
 - **Passerelle** : 10.1.1.1
 - **Clients DHCP** : 10.1.1.10 - 10.1.1.210
-- **Serveur DHCP**: 10.1.1.5
+- **Serveur DHCP**: 10.1.1.1
 
 ## DMZ (10.1.2.0/24)
 - **Passerelle** : 10.1.2.1
@@ -30,20 +30,3 @@ On subdivise le réseau 10.0.0.0/8 en sous-réseaux adaptés pour chaque segment
 ## Interconnexion routeur (10.0.0.0/24)
 - **Routeur interne (Dylan)** : 10.0.0.2
 - **Routeur externe 1 (Julien)** : 10.0.0.1
-
----
-
-# 4. **Plan de routage**
-## Routes des segments :
-1. **Réseau privé** :
-   - Destination : 10.1.2.0/24 → Passerelle 10.1.1.1 (via routeur interne)
-2. **DMZ** :
-   - Destination : 10.1.1.0/24 → Passerelle 10.1.2.1 (via routeur interne)
-3. **Routeur** :
-   - Destination : 0.0.0.0/0 (Internet) → Interface du routeur externe.
-
----
-
-# 5. **Plan de NAT**
-- **NAT interne (masquerading)** : Pour permettre aux clients du réseau privé d’accéder à Internet en utilisant l’adresse IP publique du routeur.
-- **Port forwarding** : Pour rediriger les requêtes HTTP/HTTPS et DNS vers les serveurs correspondants dans la DMZ.
