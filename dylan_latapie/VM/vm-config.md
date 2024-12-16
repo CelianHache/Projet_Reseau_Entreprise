@@ -6,7 +6,7 @@ Voici un tableau pour documenter les spécifications système des machines virtu
 
 | **Nom de la VM** | **OS**         | **Version**    | **Processeurs (vCPU)** | **RAM (GB)** | **Disque dur (GB)** | **Réseau**             | **Adresse IP**               | **Commentaire**           |
 |------------------|----------------|----------------|------------------------|--------------|---------------------|------------------------|------------------------------|---------------------------|
-| VM-SRV-ROUTER    | Ubuntu Server  | 24.04.01 (LTS) | 2                      | 2            | 30                  | LAN Interne, DMZ, WAN  | 10.0.0.2, 10.1.2.1, 10.1.1.1 | Routeur, Firewall, DHCP   |
+| VM-SRV-ROUTER    | Ubuntu Server  | 24.04.01 (LTS) | 2                      | 2            | 30                  | LAN Interne, DMZ, WAN  | 10.0.0.4, 10.1.2.1, 10.1.1.1 | Routeur, Firewall, DHCP   |
 | VM-SRV-DNS       | Ubuntu Server  | 24.04.01 (LTS) | 2                      | 2            | 30                  | DMZ                    | 10.1.2.10                    | Bind9                     |
 | VM-SRV-WEB       | Ubuntu Server  | 24.04.01 (LTS) | 2                      | 2            | 30                  | DMZ                    | 10.1.2.11                    | Apache2                   |
 | VM-SRV-NGINX     | Ubuntu Server  | 24.04.01 (LTS) | 2                      | 2            | 30                  | DMZ                    | 10.1.2.12                    | Nginx                     |
