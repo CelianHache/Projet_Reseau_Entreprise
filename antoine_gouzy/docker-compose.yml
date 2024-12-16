@@ -66,6 +66,21 @@ services:
     depends_on:
       - router
 
+  dns:
+    build: 
+      context: ./dns/
+    container_name: dns
+    command: sh -c "ip route del default &&
+                ip route add default via 10.5.2.10 &&
+                named -g -4 -u bind"
+    cap_add:
+      - NET_ADMIN
+    networks:
+      dmz :
+        ipv4_address: 10.5.2.4
+    depends_on:
+      - router
+
   router:
     build:
       context: ./router
@@ -87,6 +102,8 @@ services:
 
       iptables -t nat -A POSTROUTING -o eth2 -j MASQUERADE &&
       iptables -t nat -A PREROUTING -i eth2 -p tcp --dport 80 -j DNAT --to-destination 10.5.2.3:80 &&
+      iptables -t nat -A PREROUTING -i eth2 -p tcp --dport 53 -j DNAT --to-destination 10.5.2.4:53 &&
+      iptables -t nat -A PREROUTING -i eth2 -p udp --dport 53 -j DNAT --to-destination 10.5.2.4:53 &&
 
       iptables -P INPUT DROP &&
       iptables -P FORWARD DROP &&
@@ -98,6 +115,9 @@ services:
       iptables -A INPUT -p tcp --dport 53 -j ACCEPT   &&
       iptables -A INPUT -i lo -j ACCEPT               &&
       iptables -A INPUT -p icmp -j ACCEPT             &&
+
+      iptables -A FORWARD -p udp --dport 53 -j ACCEPT &&
+      iptables -A FORWARD -p tcp --dport 53 -j ACCEPT &&
 
       iptables -A FORWARD -i eth0 -o eth2 -j ACCEPT   &&
       iptables -A FORWARD -i eth2 -o eth0 -j ACCEPT   &&

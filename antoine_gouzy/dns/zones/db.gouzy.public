@@ -1,0 +1,14 @@
+$TTL 604800
+@       IN      SOA     ns1.gouzy.com. admin.gouzy.com. (
+                        2024121603 ; Serial
+                        3600       ; Refresh
+                        1800       ; Retry
+                        604800     ; Expire
+                        86400 )    ; Minimum TTL
+
+; Serveur DNS pour le réseau public
+@       IN      NS      ns1.gouzy.com.
+
+; Adresse public du serveur web
+ns1     IN      A       10.0.0.2
+www     IN      A       10.0.0.2
