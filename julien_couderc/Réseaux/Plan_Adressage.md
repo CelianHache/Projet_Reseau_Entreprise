@@ -16,7 +16,7 @@
 |-----------------------|-----------------|------------------------|-------------------------------|
 | Serveur Web (DMZ)     | 192.168.2.2    | 255.255.255.0          | Services accessibles publiquement |
 | Serveur DNS (DMZ)     | 192.168.2.3    | 255.255.255.0          | Résolution de noms externe   |
-| Serveur NGINX (DMZ)     | 192.168.2.4    | 255.255.255.0          | Services accessibles publiquement |
+| Serveur NGINX (DMZ)   | 192.168.2.4    | 255.255.255.0          | Services accessibles publiquement |
 
 
 ## 3. Interface d'interconnexion
