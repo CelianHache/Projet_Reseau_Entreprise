@@ -27,7 +27,21 @@ Les membres d’un groupe (4 étudiants) collaborent pour :
 | **Antoine Gouzy**   | Docker                             |
 | **Célian Hache**    | Docker                             |
 
+### **Livrables**
+Le rapport de groupe devra inclure :
+- **Obligatoire** :
+  - Un **dessin de l'architecture réseau** individuelle pour chaque membre.
+  - Une **représentation de l’interconnexion des réseaux** du groupe.
+  - Les **choix techniques principaux** et leur justification.
+- **Recommandé** :
+  - Les **difficultés rencontrées** et les solutions apportées.
+  - Les **points intéressants** du projet.
+- **Annexe possible** (optionnel) :
+  - Scripts ou fichiers de configuration.
+  - Tuto ou documentation complémentaire.
+  - Une approche créative, comme un "livre dont vous êtes le héros".
 
+    
 ## **1. Segmentation réseau**
 
 Pour garantir une sécurité et une organisation optimales, le réseau a été segmenté en trois parties principales :
@@ -93,7 +107,7 @@ Nous avons choisi une architecture avec un routeur central interne faisant la li
 
 Voici le schéma de l'architecture réseau que nous avons mis en place :
 
-![Architecture du réseau](assets/architecture-reseau.png)
+![Architecture du réseau](reseau.drawio.png)
 
 ## **5. Configuration des équipements**
 
@@ -116,11 +130,54 @@ Les postes du réseau privé sont configurés pour accéder aux ressources inter
 
 ## **6. Principaux choix effectués**
 
-1. **Architecture segmentée** pour limiter les risques liés à des attaques externes.
-2. **Utilisation de sous-réseaux** pour simplifier la gestion des adresses IP.
-3. **Configuration manuelle des serveurs** pour garantir la stabilité.
-4. **Sécurisation via iptables** pour contrôler les flux réseau.
-5. **DNS et reverse proxy** pour gérer efficacement les noms de domaine et rediriger les requêtes.
+Le projet repose sur des choix stratégiques pour garantir une architecture réseau performante, sécurisée et adaptable. Les décisions ont été motivées par des considérations techniques et organisationnelles, basées sur les meilleures pratiques en matière de conception réseau.
+
+### **6.1 Architecture segmentée**
+Nous avons opté pour une segmentation réseau en trois zones distinctes (réseau privé, DMZ et interconnexion routeur) afin de :
+- **Isoler les services critiques** : Les services exposés (DNS, web) sont isolés dans une DMZ, limitant les impacts en cas de compromission.
+- **Faciliter le routage et la sécurité** : Chaque segment bénéficie de règles spécifiques, simplifiant l’administration et limitant les risques de failles.
+- **Assurer une évolutivité** : L’architecture permet d’ajouter facilement de nouveaux segments ou services.
+
+### **6.2 Sous-réseaux dédiés**
+Nous avons subdivisé les plages d’adresses IP pour chaque zone en fonction des besoins spécifiques :
+- **Réseau privé (192.168.1.0/24)** : Réservé aux postes et serveurs internes, avec un serveur DHCP facilitant la gestion des adresses.
+- **DMZ (192.168.2.0/24)** : Utilisation d’adresses fixes pour une identification et une administration simplifiées des serveurs publics.
+- **Interconnexion routeur (192.168.3.0/24)** : Adresses statiques pour connecter les routeurs et garantir une communication stable entre les segments.
+
+Ce choix offre une **gestion centralisée et claire** tout en évitant les conflits IP.
+
+### **6.3 Configuration manuelle des serveurs**
+Les adresses IP et les paramètres critiques des serveurs hébergés dans la DMZ (DNS, web, reverse proxy) ont été configurés manuellement :
+- Cela garantit une **disponibilité constante** des services publics.
+- Les adresses fixes simplifient le suivi et le diagnostic en cas d’incidents.
+
+### **6.4 Utilisation de NAT et règles iptables**
+Pour sécuriser les flux réseau :
+- **NAT (Network Address Translation)** masque les adresses IP internes pour protéger les postes privés.
+- **Filtrage iptables** pour :
+  - Restreindre les flux à l’essentiel (HTTP, HTTPS, DNS dans la DMZ).
+  - Bloquer tout trafic non autorisé entre la DMZ et le réseau privé.
+  - Limiter les accès externes à des ports spécifiques.
+
+Cela réduit les risques d’intrusions tout en assurant un fonctionnement optimal.
+
+### **6.5 Gestion des noms de domaine avec DNS et reverse proxy**
+- **DNS interne** : Configure les noms de domaine internes pour une navigation simplifiée dans le réseau.
+- **Reverse proxy (NGINX)** : Centralise les requêtes externes, offrant une gestion robuste des connexions et redirigeant efficacement vers les services adaptés.
+
+Cette approche optimise les performances et renforce la sécurité grâce à un contrôle centralisé des connexions entrantes.
+
+### **6.6 Répartition des outils de virtualisation**
+Le projet intègre l’utilisation de deux plateformes majeures (VirtualBox et Docker) :
+- **VirtualBox** : Offrant un environnement complet pour tester des configurations réseau complexes avec plusieurs machines virtuelles.
+- **Docker** : Fournissant une solution légère et modulaire pour déployer rapidement des services comme le DNS et le web.
+
+Cette complémentarité permet de capitaliser sur les points forts de chaque outil.
+
+### **6.7 Documentation et collaboration**
+Chaque choix a été documenté pour faciliter :
+- La compréhension des configurations.
+- Les tests collectifs et les itérations successives.
 
 ## **7. Principales difficultés rencontrées**
 
