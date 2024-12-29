@@ -1,4 +1,32 @@
-# **Rapport du Projet de Réseau d'Entreprise**
+# Compte Rendu : Projet 1IR - Les Protocoles de l'Internet 2024-2025
+
+## **Objectif du Projet**
+Le projet vise à comprendre et maîtriser les principaux protocoles et mécanismes des réseaux Internet classiques à faible échelle, comme les réseaux domestiques ou d'entreprise. Les objectifs spécifiques sont :
+- Concevoir un réseau d'entreprise en suivant une démarche incrémentale.
+- Appliquer les concepts théoriques étudiés en cours à travers une mise en œuvre pratique.
+- Développer des compétences en configuration réseau et en sécurité.
+
+## **Organisation**
+
+### **Travail individuel**
+Chaque étudiant doit :
+- Concevoir et mettre en place son propre réseau sur des machines virtuelles.
+- Réaliser une architecture intégrant un réseau privé et une DMZ.
+
+### **Travail en groupe**
+Les membres d’un groupe (4 étudiants) collaborent pour :
+- Interconnecter leurs réseaux respectifs.
+- Tester l'intégration de leurs réseaux.
+- Produire un rapport détaillé des choix techniques et des observations.
+
+#### **Répartition des outils de virtualisation**
+| **Membre**         | **Outil de virtualisation utilisé** |
+|---------------------|-------------------------------------|
+| **Julien Couderc**  | VirtualBox                         |
+| **Dylan Latapie**   | VirtualBox                         |
+| **Antoine Gouzy**   | Docker                             |
+| **Célian Hache**    | Docker                             |
+
 
 ## **1. Segmentation réseau**
 
@@ -27,41 +55,41 @@ Cette partie connecte les différentes segments (réseau privé, DMZ) entre eux 
 
 ## **2. Plages d'adresses**
 
-Pour garantir une gestion simplifiée des adresses IP et éviter tout conflit, le réseau principal (10.0.0.0/8) a été subdivisé en sous-réseaux.
+Pour garantir une gestion simplifiée des adresses IP et éviter tout conflit, le réseau principal a été subdivisé en sous-réseaux.
 
 | **Segment**             | **Sous-réseau**    | **Masque**      | **Plage d'adresses**   | **Utilisation**                                           |
 |-------------------------|--------------------|-----------------|------------------------|-----------------------------------------------------------|
-| Réseau privé            | 10.1.1.0/24       | 255.255.255.0   | 10.1.1.1 - 10.1.1.254  | Postes utilisateurs et machines internes.                 |
-| DMZ                     | 10.1.2.0/24       | 255.255.255.0   | 10.1.2.1 - 10.1.2.254  | Hébergement de services publics.                         |
-| Interconnexion routeur  | 10.0.0.0/24       | 255.255.255.0   | 10.0.0.1 - 10.0.0.254  | Interfaces des routeurs entre segments.                  |
+| Réseau privé            | 192.168.1.0/24       | 255.255.255.0   | 192.168.1.1 - 192.168.1.254  | Station de travail                 |
+| DMZ                     | 192.168.2.0/24       | 255.255.255.0   | 192.168.2.1 - 192.168.2.254  | Hébergement de services publics.                         |
+| Interconnexion routeur  | 192.168.3.0/24       | 255.255.255.0   | 192.168.3.1 - 192.168.3.254  | Interfaces des routeurs entre segments.                  |
 
 Chaque sous-réseau est isolé des autres via des règles de pare-feu, limitant les communications aux seuls flux nécessaires.
 
 ## **3. Détails d’adressage**
 
 ### **Réseau privé**
-- **Passerelle** : 10.1.1.1 (assurée par le routeur interne).
-- **Adresses dynamiques (DHCP)** : Réservées pour les postes utilisateurs (10.1.1.10 à 10.1.1.210).
+- **Passerelle** : 192.168.1.1 (assurée par le routeur interne).
+- **Adresses dynamiques (DHCP)** : Réservées pour les postes utilisateurs (192.168.1.10 à 192.168.1.210).
 - **Configuration** : 
   - Serveur DHCP sur le routeur interne.
   - Attribution dynamique pour simplifier la gestion des postes utilisateurs.
 
 ### **DMZ**
-- **Passerelle** : 10.1.2.1.
+- **Passerelle** : 192.168.2.1.
 - **Adresses fixes pour les serveurs** :
-  - Serveur DNS : 10.1.2.10.
-  - Serveur Web : 10.1.2.11.
-  - Serveur NGINX : 10.1.2.12.
+  - Serveur Web : 192.168.2.2.
+  - Serveur DNS : 192.168.2.3.
+  - Serveur NGINX : 192.168.2.4.
 - **Configuration** : Adresses IP configurées manuellement pour garantir une disponibilité constante.
 
 ### **Interconnexion routeur**
 - **Interfaces des routeurs** :
-  - Routeur interne (10.0.0.4) : Relie le réseau privé et la DMZ.
-  - Routeur externe 1 (10.0.0.2), 2 (10.0.0.3), et 3 (10.0.0.5) : Relient le réseau interne au WAN.
+  - Routeur interne (10.0.0.5) : Relie le réseau privé et la DMZ.
+  - Routeur externe 1 (10.0.0.2), 2 (10.0.0.3), et 3 (10.0.0.4) : Relient le réseau interne au WAN.
 
 ## **4. Architecture du réseau**
 
-Nous avons choisi une architecture avec un routeur central interne faisant la liaison entre le réseau privé, la DMZ, et le réseau externe avec les routeurs de Célian, Antoine et Julien.
+Nous avons choisi une architecture avec un routeur central interne faisant la liaison entre le réseau privé, la DMZ, et le réseau externe avec les routeurs de Célian, Antoine et Dylan.
 
 Voici le schéma de l'architecture réseau que nous avons mis en place :
 
