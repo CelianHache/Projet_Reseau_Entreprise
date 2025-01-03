@@ -1,0 +1,4 @@
+zone "celianhache.com" {
+  type master;
+  file "/etc/bind/db.hache.com";
+};

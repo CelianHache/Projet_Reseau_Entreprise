@@ -1,0 +1,156 @@
+services:
+  router:
+    build:
+      context: ./router
+    networks:
+      private:
+        ipv4_address: 172.18.0.2
+      dmz:
+        ipv4_address: 172.18.1.2
+      public:
+        ipv4_address: 10.0.0.3
+    cap_add:
+      - NET_ADMIN 
+    command: >-
+      sh -c "
+      iptables -P INPUT DROP &&
+      iptables -P FORWARD DROP &&
+      iptables -P OUTPUT ACCEPT &&
+
+      iptables -t nat -A POSTROUTING -o eth2 -j MASQUERADE &&
+      iptables -t nat -A PREROUTING -i eth2 -p tcp --dport 80 -j DNAT --to-destination 172.18.1.4:80 && 
+      iptables -t nat -A PREROUTING -i eth2 -p tcp --dport 53 -j DNAT --to-destination 172.18.1.5:53 && 
+      iptables -t nat -A PREROUTING -i eth2 -p udp --dport 53 -j DNAT --to-destination 172.18.1.5:53 && 
+
+      iptables -A FORWARD -p udp --dport 53 -j ACCEPT &&
+      iptables -A FORWARD -p tcp --dport 53 -j ACCEPT &&
+
+      iptables -A INPUT -p icmp -j ACCEPT &&
+      iptables -A OUTPUT -p icmp -j ACCEPT &&
+
+      iptables -A INPUT -p tcp --dport 443 -j ACCEPT &&
+      iptables -A INPUT -p tcp --dport 80 -j ACCEPT &&
+      iptables -A INPUT -p tcp --dport 22 -j ACCEPT &&
+      iptables -A INPUT -p tcp --dport 53 -j ACCEPT &&
+      iptables -A INPUT -p udp --dport 53 -j ACCEPT &&
+
+      iptables -A FORWARD -i eth0 -o eth1 -j ACCEPT &&         
+      iptables -A FORWARD -i eth1 -o eth0 -j ACCEPT &&
+
+      iptables -A FORWARD -i eth0 -o eth2 -j ACCEPT &&
+      iptables -A FORWARD -i eth2 -o eth0 -j ACCEPT &&
+
+      iptables -A FORWARD -i eth1 -o eth2 -j ACCEPT &&
+      iptables -A FORWARD -i eth2 -o eth1 -j ACCEPT &&
+
+      iptables -A INPUT -i lo -j ACCEPT &&
+      iptables -A OUTPUT -o lo -j ACCEPT &&
+
+      ip addr add 172.18.0.1/24 dev eth0 && 
+      ip addr add 172.18.1.1/24 dev eth1 &&  
+
+      service isc-dhcp-server start &&
+
+      tail -f /dev/null"
+
+  user1:
+    build:
+      context: ./private/user
+    networks:
+      - private
+    cap_add:
+      - NET_ADMIN
+    command: >-
+      sh -c "
+      ip addr flush dev eth0 &&
+      dhclient eth0 &&
+      ip route del default &&
+      ip route add default via 172.18.0.2 &&
+      tail -f /dev/null"
+    depends_on:
+      - router
+
+  user2:
+    build:
+      context: ./private/user
+    networks:
+      - private
+    cap_add:
+      - NET_ADMIN
+    command: >-
+      sh -c "
+      ip addr flush dev eth0 &&
+      dhclient eth0 &&
+      ip route del default &&
+      ip route add default via 172.18.0.2 &&
+      tail -f /dev/null"
+    depends_on:
+      - router
+
+  reverse-proxy:
+    build:
+      context: ./dmz/reverse_proxy
+    networks:
+      dmz:
+        ipv4_address: 172.18.1.4
+    cap_add:
+      - NET_ADMIN
+    
+    command: >-
+      sh -c "
+      ip route del default &&
+      ip route add default via 172.18.1.2 &&
+      nginx -g 'daemon off;'"
+    depends_on:
+      - router
+
+  dns:
+    build:
+      context: ./dmz/dns
+    networks:
+      dmz:
+        ipv4_address: 172.18.1.5
+    cap_add:
+      - NET_ADMIN
+    command: >-
+      sh -c "
+      ip route del default &&
+      ip route add default via 172.18.1.2 &&
+      named -g -4 -u bind"
+    depends_on:
+      - router
+
+  webserver:
+    build:
+      context: ./dmz/webserver
+    networks:
+      dmz:
+        ipv4_address: 172.18.1.3
+    cap_add:
+      - NET_ADMIN
+    command: >-
+      sh -c "
+      ip route del default &&
+      ip route add default via 172.18.1.2 &&
+      apachectl -D FOREGROUND"
+    depends_on:
+      - router
+
+networks:
+  public: 
+    driver: macvlan
+    driver_opts:
+        parent: enp0s31f6
+    ipam:
+      config:
+        - subnet: 10.0.0.0/24
+  private:
+    driver: bridge
+    ipam: 
+      config: 
+        - subnet: 172.18.0.0/24
+  dmz:
+    driver: bridge
+    ipam: 
+      config: 
+        - subnet: 172.18.1.0/24
