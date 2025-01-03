@@ -1,0 +1,14 @@
+$TTL 604800
+@   IN  SOA ns1.gouzy.com. admin.gouzy.com. (
+            2023121201 ; Serial
+            604800     ; Refresh
+            86400      ; Retry
+            2419200    ; Expire
+            604800 )   ; Negative Cache TTL
+
+; Name Servers
+@   IN  NS  ns1.gouzy.com.
+
+; A Records
+ns1 IN  A   10.5.2.4
+www IN  A   10.5.2.3
