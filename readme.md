@@ -67,7 +67,7 @@ Cette partie connecte les différentes segments (réseau privé, DMZ) entre eux 
 - **Configuration** : Routes statiques ou dynamiques en fonction des besoins.
 - **Sécurité** : Règles NAT pour masquer les adresses internes.
 
-## Section individuelle
+## **2. Section individuelle**
 
 ### Julien Couderc
 
@@ -245,7 +245,7 @@ Voici le schéma de l'architecture réseau que nous avons mis en place :
 
 ![Architecture du réseau](./antoine_gouzy/reseau.drawio.svg)
 
-## **5. Configuration des équipements**
+## **3. Configuration des équipements**
 
 ### **Routeur**
 Le routeur interne joue un rôle clé :
@@ -264,17 +264,17 @@ Les configurations des serveurs DNS, Web, et NGINX incluent :
 ### **Postes utilisateurs**
 Les postes du réseau privé sont configurés pour accéder aux ressources internes et externes via la passerelle 10.1.1.1.
 
-## **6. Principaux choix effectués**
+## **4. Principaux choix effectués**
 
 Le projet repose sur des choix stratégiques pour garantir une architecture réseau performante, sécurisée et adaptable. Les décisions ont été motivées par des considérations techniques et organisationnelles, basées sur les meilleures pratiques en matière de conception réseau.
 
-### **6.1 Architecture segmentée**
+### **4.1 Architecture segmentée**
 Nous avons opté pour une segmentation réseau en trois zones distinctes (réseau privé, DMZ et interconnexion routeur) afin de :
 - **Isoler les services critiques** : Les services exposés (DNS, web) sont isolés dans une DMZ, limitant les impacts en cas de compromission.
 - **Faciliter le routage et la sécurité** : Chaque segment bénéficie de règles spécifiques, simplifiant l’administration et limitant les risques de failles.
 - **Assurer une évolutivité** : L’architecture permet d’ajouter facilement de nouveaux segments ou services.
 
-### **6.2 Sous-réseaux dédiés**
+### **4.2 Sous-réseaux dédiés**
 Nous avons subdivisé les plages d’adresses IP pour chaque zone en fonction des besoins spécifiques :
 - **Réseau privé (192.168.1.0/24)** : Réservé aux postes et serveurs internes, avec un serveur DHCP facilitant la gestion des adresses.
 - **DMZ (192.168.2.0/24)** : Utilisation d’adresses fixes pour une identification et une administration simplifiées des serveurs publics.
@@ -282,12 +282,12 @@ Nous avons subdivisé les plages d’adresses IP pour chaque zone en fonction de
 
 Ce choix offre une **gestion centralisée et claire** tout en évitant les conflits IP.
 
-### **6.3 Configuration manuelle des serveurs**
+### **4.3 Configuration manuelle des serveurs**
 Les adresses IP et les paramètres critiques des serveurs hébergés dans la DMZ (DNS, web, reverse proxy) ont été configurés manuellement :
 - Cela garantit une **disponibilité constante** des services publics.
 - Les adresses fixes simplifient le suivi et le diagnostic en cas d’incidents.
 
-### **6.4 Utilisation de NAT et règles iptables**
+### **4.4 Utilisation de NAT et règles iptables**
 Pour sécuriser les flux réseau :
 - **NAT (Network Address Translation)** masque les adresses IP internes pour protéger les postes privés.
 - **Filtrage iptables** pour :
@@ -297,38 +297,38 @@ Pour sécuriser les flux réseau :
 
 Cela réduit les risques d’intrusions tout en assurant un fonctionnement optimal.
 
-### **6.5 Gestion des noms de domaine avec DNS et reverse proxy**
+### **4.5 Gestion des noms de domaine avec DNS et reverse proxy**
 - **DNS interne** : Configure les noms de domaine internes pour une navigation simplifiée dans le réseau.
 - **Reverse proxy (NGINX)** : Centralise les requêtes externes, offrant une gestion robuste des connexions et redirigeant efficacement vers les services adaptés.
 
 Cette approche optimise les performances et renforce la sécurité grâce à un contrôle centralisé des connexions entrantes.
 
-### **6.6 Répartition des outils de virtualisation**
+### **4.6 Répartition des outils de virtualisation**
 Le projet intègre l’utilisation de deux plateformes majeures (VirtualBox et Docker) :
 - **VirtualBox** : Offrant un environnement complet pour tester des configurations réseau complexes avec plusieurs machines virtuelles.
 - **Docker** : Fournissant une solution légère et modulaire pour déployer rapidement des services comme le DNS et le web.
 
 Cette complémentarité permet de capitaliser sur les points forts de chaque outil.
 
-### **6.7 Documentation et collaboration**
+### **4.7 Documentation et collaboration**
 Chaque choix a été documenté pour faciliter :
 - La compréhension des configurations.
 - Les tests collectifs et les itérations successives.
 
-## **7. Principales difficultés rencontrées**
+## **5. Principales difficultés rencontrées**
 
 1. **Configuration des règles iptables** : Compréhension et implémentation des règles complexes pour NAT et filtrage.
 2. **Dépannage des problèmes de connectivité** : Résolution des conflits IP et des erreurs de routage.
 3. **Mise en place des services (NGINX, DNS)** : Ajustements pour garantir leur bon fonctionnement dans un environnement segmenté.
 4. **Configuration des réseau Macvlan sur docker** : Compréhension et mise en place des réseaux docker.
 
-## **8. Solutions apportées**
+## **6. Solutions apportées**
 
 1. **Documentation et tests réguliers** : Identification et correction des erreurs lors de chaque étape.
 2. **Utilisation de fichiers de configuration standards** : Basés sur des guides pour éviter les erreurs courantes.
 3. **Collaboration** : Discussions en groupe pour résoudre rapidement les problèmes rencontrés.
 
-## **9. Points intéressants**
+## **7. Points intéressants**
 
 1. **Gain en sécurité et en organisation** grâce à la segmentation du réseau.
 2. **Simplification de la gestion des IP** avec l'usage du DHCP et des adresses fixes.
