@@ -180,7 +180,7 @@ Chaque sous-réseau est isolé des autres via des règles de pare-feu, limitant 
 
 ##### **Réseau privé**
 - **Passerelle** : 10.1.1.1 (assurée par le routeur interne).
-- **Adresses dynamiques (DHCP)** : Réservées pour les postes utilisateurs (10.1.1.10 à 10.1.1.254).
+- **Adresses dynamiques (DHCP)** : Réservées pour les postes utilisateurs (10.1.1.10 à 10.1.1.210).
 - **Configuration** : 
   - Serveur DHCP sur le routeur interne.
   - Attribution dynamique pour simplifier la gestion des postes utilisateurs.
@@ -283,7 +283,7 @@ Nous avons opté pour une segmentation réseau en trois zones distinctes (résea
 Nous avons subdivisé les plages d’adresses IP pour chaque zone en fonction des besoins spécifiques :
 - **Réseau privé (192.168.1.0/24)** : Réservé aux postes et serveurs internes, avec un serveur DHCP facilitant la gestion des adresses.
 - **DMZ (192.168.2.0/24)** : Utilisation d’adresses fixes pour une identification et une administration simplifiées des serveurs publics.
-- **Interconnexion routeur (192.168.3.0/24)** : Adresses statiques pour connecter les routeurs et garantir une communication stable entre les segments.
+- **Interconnexion routeur (10.0.0.0/24)** : Adresses statiques pour connecter les routeurs et garantir une communication stable entre les segments.
 
 Ce choix offre une **gestion centralisée et claire** tout en évitant les conflits IP.
 
