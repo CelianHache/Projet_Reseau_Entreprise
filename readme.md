@@ -340,8 +340,4 @@ Chaque choix a été documenté pour faciliter :
 3. **Montée en compétences** sur des outils réseau avancés comme BIND9 et NGINX.
 
 ## **8. Annexes**
-- **Scripts iptables** : Voir [ci-dessus](#configuration-des-équipements).
-- **Fichiers de configuration (DHCP, DNS, etc.)** : Inclus en annexe.
-- **Tutoriels** :
-  - Guide pas à pas pour installer et configurer les services principaux.
-  - Explications pour tester les règles et les configurations.
+- **Documents procédure & fichiers de configuration** : Voir dans les différents dossiers des membres.
