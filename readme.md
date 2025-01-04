@@ -113,6 +113,11 @@ Voici le schéma de l'architecture réseau que nous avons mis en place :
 
 ![Architecture du réseau](./julien_couderc/reseau.drawio.png)
 
+#### **4. Difficultés**
+
+Étant issu d'un BUT Informatique et n'ayant que peu d'expérience avec VirtualBox, j'ai eu quelques difficultés au début à prendre en main le logiciel. Beaucoup de fonctionnalités étaient nouvelles pour moi et il m'a fallu un peu de temps pour bien les comprendre. Heureusement, Dylan Latapie a été là pour m'aider. Grâce à ses explications claires et à son accompagnement, j'ai pu surmonter ces obstacles et finir par maîtriser l'outil.
+
+
 ### Célian Hache
 
 #### **1. Plages d'adresses**
