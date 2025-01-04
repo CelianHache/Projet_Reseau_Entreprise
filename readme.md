@@ -339,7 +339,7 @@ Chaque choix a été documenté pour faciliter :
 2. **Simplification de la gestion des IP** avec l'usage du DHCP et des adresses fixes.
 3. **Montée en compétences** sur des outils réseau avancés comme BIND9 et NGINX.
 
-## **10. Annexes**
+## **8. Annexes**
 - **Scripts iptables** : Voir [ci-dessus](#configuration-des-équipements).
 - **Fichiers de configuration (DHCP, DNS, etc.)** : Inclus en annexe.
 - **Tutoriels** :
